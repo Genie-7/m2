@@ -1,0 +1,27 @@
+# Ignore Visual Studio Code settings
+.vscode/
+
+# Ignore cache directory
+cache/
+
+# Ignore Python cache files
+__pycache__/
+
+# Ignore data directory (if you want to exclude it)
+data/
+
+# Ignore the visualizations directory (if these are generated files)
+visualizations/
+
+# Ignore specific files
+2201.12633v1.pdf
+training_progress.png
+Untitled-1.json
+
+# Ignore other temporary or system files
+*.pyc
+*.pyo
+*.pyd
+*.swp
+.DS_Store
+Thumbs.db
