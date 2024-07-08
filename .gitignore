@@ -17,6 +17,7 @@ visualizations/
 2201.12633v1.pdf
 training_progress.png
 Untitled-1.json
+*.png
 
 # Ignore other temporary or system files
 *.pyc

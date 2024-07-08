@@ -1,3 +1,4 @@
+import numpy as np
 import torch
 import torch.nn.functional as F
 import torchvision.transforms as transforms
@@ -12,9 +13,11 @@ import torch.multiprocessing as mp
 import matplotlib.pyplot as plt
 from torch.optim.lr_scheduler import StepLR
 from visualization import analyze_graphs
+from utils import process_subset
 
 from data_processing import process_dataset_mp, load_processed_graphs, save_processed_graphs, calculate_avg_superpixels
 from models import SplineCNN
+from wavelet_utils import WaveMesh
 
 def debug_single_image_processing():
     transform = transforms.Compose([
@@ -158,10 +161,9 @@ def test(model, loader, device, epoch):
             pbar.set_postfix({'Acc': f'{correct/total:.4f}'})
     return correct / total
 
-def main(force_reprocess=False):
+def main(force_reprocess=False, subset=False):
     mp.set_start_method('spawn', force=True)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    #device = torch.device('cpu')
 
     print(f"Using device: {device}")
 
@@ -182,6 +184,15 @@ def main(force_reprocess=False):
 
     cache_dir = './cache'
     os.makedirs(cache_dir, exist_ok=True)
+
+    if subset:
+        #To process a subset of the training data to visualize the superpixels 
+        print("Processing subset of training data...")
+        wavemesh = WaveMesh(wname=sp_params['wname'], level=sp_params['level'], threshold_mult=sp_params['thresh_mult'])
+        subset_data, superpixel_counts = process_subset(mnist_train, wavemesh, num_samples=500)
+        print(f"Average number of superpixels: {np.mean(superpixel_counts):.2f} ± {np.std(superpixel_counts):.2f}")
+        return
+        
 
     if force_reprocess or not os.path.exists('train_graphs.pkl'):
         print("Processing training dataset...")
@@ -261,7 +272,7 @@ def main(force_reprocess=False):
     print("Training completed.")
 
 if __name__ == "__main__":
-    main(force_reprocess=False)
+    main(force_reprocess=False, subset=True)
     #Latest:
     #In this modified version, we've removed the pooling operation between the two SplineConv layers, as it was causing the dimension mismatch. 
     # If you want to keep the pooling, you'll need to adjust the number of input channels to the second SplineConv layer to match the output of the pooling layer.
