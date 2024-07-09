@@ -175,10 +175,11 @@ def main(force_reprocess=False, subset=False):
     mnist_train = FashionMNIST(root='./data', train=True, download=True, transform=transform)
     mnist_test = FashionMNIST(root='./data', train=False, download=True, transform=transform)
 
+    # TODO: check the Threshold multiplication. What is this for?
     sp_params = {
         'wname': 'db1',
         'level': None,
-        'thresh_mult': 0.1,  # Reduce this value
+        'thresh_mult': 5,  # Reduce this value
         'verbose': False
     }
 
