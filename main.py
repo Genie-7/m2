@@ -3,7 +3,7 @@ import torch
 import torch.nn.functional as F
 import torchvision.transforms as transforms
 from torch_geometric.loader import DataLoader
-from torchvision.datasets import MNIST
+from torchvision.datasets import MNIST, FashionMNIST
 import traceback
 import pickle
 import os
@@ -25,7 +25,7 @@ def debug_single_image_processing():
         transforms.Normalize((0.5,), (0.5,))
     ])
 
-    mnist_train = MNIST(root='./data', train=True, download=True, transform=transform)
+    mnist_train = FashionMNIST(root='./data', train=True, download=True, transform=transform)
     
     # Get the first image
     image, label = mnist_train[0]
@@ -172,8 +172,8 @@ def main(force_reprocess=False, subset=False):
         transforms.Normalize((0.5,), (0.5,))
     ])
 
-    mnist_train = MNIST(root='./data', train=True, download=True, transform=transform)
-    mnist_test = MNIST(root='./data', train=False, download=True, transform=transform)
+    mnist_train = FashionMNIST(root='./data', train=True, download=True, transform=transform)
+    mnist_test = FashionMNIST(root='./data', train=False, download=True, transform=transform)
 
     sp_params = {
         'wname': 'db1',
